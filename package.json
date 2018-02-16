@@ -1,6 +1,6 @@
 {
   "name": "preimage-server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A pay-to-decrypt service using lnd",
   "main": "index.js",
   "scripts": {
@@ -19,6 +19,8 @@
     "graphql-tag": "latest",
     "graphql-tools": "latest",
     "js-salsa20": "latest",
+    "level-browserify": "latest",
+    "levelgraph": "latest",
     "lnd-graphql": "latest",
     "nact": "latest",
     "next": "latest",
