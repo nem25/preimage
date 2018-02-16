@@ -1,0 +1,29 @@
+{
+  "name": "preimage-server",
+  "version": "0.0.1",
+  "description": "A pay-to-decrypt service using lnd",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "author": "aynik",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "latest",
+    "body-parser": "latest",
+    "express": "latest",
+    "graphql": "latest",
+    "graphql-subscriptions": "latest",
+    "graphql-tag": "latest",
+    "graphql-tools": "latest",
+    "js-salsa20": "latest",
+    "lnd-graphql": "latest",
+    "nact": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "subscriptions-transport-ws": "latest"
+  }
+}
