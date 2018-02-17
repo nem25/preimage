@@ -1,12 +1,12 @@
 {
   "name": "preimage-server",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A pay-to-decrypt service using lnd",
   "main": "index.js",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "node --harmony_async_iteration server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node --harmony_async_iteration server.js"
   },
   "author": "aynik",
   "license": "ISC",
