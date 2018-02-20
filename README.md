@@ -7,9 +7,9 @@
 1. Encrypt some data using the `encryptData` query.
 
 ```graphql
-query encryptData($owner:String!,$data:String!,$price:Int!){
+query encryptData($owner:String!,$data:String!,$price:Int!) {
   encryptData(owner:$owner,data:$data,price:$price) {
-    data
+    encryptedData
   }
 }
 ```
@@ -22,14 +22,14 @@ query encryptData($owner:String!,$data:String!,$price:Int!){
 }
 ```
 
-2. Fetch the resulting encrypted `data` and give it to the `decryptEncryptDataPayment` query.
+2. Fetch the resulting `encryptedData` and give it to the `decryptEncryptDataPayment` query.
 
 ```graphql
-query decryptEncryptDataPayment($encryptedData:String!){
+query decryptEncryptDataPayment($encryptedData:String!) {
   decryptEncryptDataPayment(encryptedData:$encryptedData) {
     paymentRequest
     preimageHash
-    data
+    encryptedData
   }
 }
 ```
@@ -59,9 +59,9 @@ subscription decryptionKey($keyHash:String!) {
 4. Serve the `paymentRequest` from step 2 to the payer, and once it's settled, you'll receive a `key` on the `decryptionKeys` subscription. You can use it to decrypt the data client-side.
 
 ```graphql
-query decryptData($key:String!,$data:String!){
+query decryptData($key:String!,$data:String!) {
   decryptData(key:$key,data:$data) {
-    data
+    decryptedData
   }
 }
 ```
@@ -78,9 +78,11 @@ query decryptData($key:String!,$data:String!){
 1. Use the `encryptDataPayment` query directly to provide the data, owner and price.
 
 ```graphql
-query encryptDataPayment($owner:String!,$data:String!,$price:Int!){
+query encryptDataPayment($owner:String!,$data:String!,$price:Int!) {
   encryptDataPayment(owner:$owner,data:$data,price:$price) {
-    data
+    paymentRequest
+    preimageHash
+    encryptedData
   }
 }
 ```
@@ -93,4 +95,23 @@ query encryptDataPayment($owner:String!,$data:String!,$price:Int!){
 }
 ```
 
-2. Follow the steps 3 and 4 from "Public decryption mode" but server-side.
+2. Follow the steps 3 and 4 from 'Public decryption mode' but server-side.
+
+### Requesting payouts
+
+Using the lightning node associated with the public key supplied in previous steps in the `owner` field, create a payment request for the value of `0 satoshis` (intentional to allow the service to pay any amount). Then execute the `requestPayout` mutation.
+
+```graphql
+mutation requestPayout($paymentRequest:String!) {
+  requestPayout(paymentRequest:$paymentRequest) {
+    sent
+    amount
+  }
+}
+```
+
+```js
+{
+  "paymentRequest": "lntb1pdgcrs0pp5wcqg0zmcudltmtuqvkpa9sp4lpwtdqq3zcwu6j2p4zq53dnujhpqdqqcqzysdd80l389er6cy24zm2gesl407z3k2awxhp0st5xtw8a2973y4feym3v2xd84znj5fjnu7y6m4hwvteygvrnsugep94dhtkuc6932uyqqp2lvdc"
+}
+```
