@@ -59,9 +59,9 @@ subscription decryptionKey($keyHash:String!) {
 4. Serve the `paymentRequest` from step 2 to the payer, and once it's settled, you'll receive a `key` on the `decryptionKeys` subscription. You can use it to decrypt the data client-side.
 
 ```graphql
-query decryptData($key:String!,$data:String!) {
-  decryptData(key:$key,data:$data) {
-    decryptedData
+query decryptData($key:String!,$encryptedData:String!) {
+  decryptData(key:$key,encryptedData:$encryptedData) {
+    data
   }
 }
 ```
@@ -69,7 +69,7 @@ query decryptData($key:String!,$data:String!) {
 ```js
 {
   "key": "6cf6c01f819dd8e244334303bb142f0f2fc79fe698cc62503ced389fae8c7290",
-  "data": "18F6ANBkczxZWzB7LxXz13BDB17CUzgFVRGxjD0="
+  "encryptedData": "18F6ANBkczxZWzB7LxXz13BDB17CUzgFVRGxjD0="
 }
 ```
 
