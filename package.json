@@ -1,12 +1,13 @@
 {
   "name": "preimage-server",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A pay-to-decrypt service using lnd",
   "main": "index.js",
   "scripts": {
     "dev": "node --harmony_async_iteration server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node --harmony_async_iteration server.js"
+    "start": "NODE_ENV=production node --harmony_async_iteration server.js",
+    "test": "mocha --exit --harmony_async_iteration test/unit.js && mocha --exit --harmony_async_iteration test/integration.js"
   },
   "author": "aynik",
   "license": "ISC",
