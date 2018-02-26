@@ -1,24 +1,35 @@
 import React from 'react'
 
-export default () => (
-  <form>
+export default (props) => (
+  <form id='new' action='/new' method='post'>
     <style jsx>{`
       form {
-        font-family: Montserrat;
-        display: flex;
-        flex-flow: column;
         height: calc(100% - 40px);
+        min-width: 320px;
       }
-      form > input, 
-      form > textarea, 
-      form > button {
-        display block;
+      div {
+        min-height: 88px;
+        display: flex;
+        position: relative;
+        top: 0;
+      }
+      span {
+        display: inline-flex;
+        flex-direction: column;
+        width: 100%;
+      }
+      .expand {
+        height: calc(100% - 94px - (88px * 3));
+        min-height: 275px;
+      }
+      .final {
+        padding-top: 6px;
       }
       input, textarea {
         border: 1px solid #464646;
         border-radius: 2px;
         background: #000;
-        color: #666;
+        color: #c3c3c3;
         font-size: 14px;
         width: calc(100% - 52px);
         line-height: 18px;
@@ -36,7 +47,8 @@ export default () => (
         min-height: 18px;
       }
       textarea {
-        min-height: calc(100% - 328px);
+        height: calc(100% - 22px);
+        min-height: 206px;
       }
       label {
         color: #666;
@@ -48,10 +60,6 @@ export default () => (
       input:invalid {
         border-color: red !important;
       }
-      input::placeholder {
-        position: relative;
-        left: calc(-100% + 22px);
-      }
       input[type='number']::-webkit-outer-spin-button,
       input[type='number']::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -59,6 +67,7 @@ export default () => (
       }
       input[type='number'] {
         -moz-appearance: textfield;
+        text-align: right;
       }
       input:focus,
       textarea:focus,
@@ -86,15 +95,41 @@ export default () => (
         color: #000;
       }
     `}</style>
-    <input style={{order:2, textAlign: 'right'}} 
-      type='number' placeholder='BTC'
-      step='0.00000001' max='21000000' />
-    <label style={{order:1}}>Price</label>
-    <input style={{order:4}} type='text'
-      pattern='^[a-f0-9]{66}$' />
-    <label style={{order:3}}>Payout public key</label>
-    <textarea style={{order:6}} />
-    <label style={{order:5}}>Markdown</label>
-    <button style={{order:7}}>Submit</button>
+    <div>
+      <span style={{width:'62%'}}>
+        <input name='title' style={{order:2}} type='text' pattern='^.{1,140}$' />
+        <label style={{order:1}}>Title (140 chars max)</label>
+      </span>
+      <span style={{width:'38%'}}>
+        <input name='price' style={{order:2}}
+          type='number' step='1' max='2100000000000000' />
+        <label style={{order:1}}>Price (sats)</label>
+      </span>
+    </div>
+    <div>
+      <span>
+        <input name='owner' style={{order:2}} type='text'
+          pattern='^[a-f0-9]{66}$' />
+        <label style={{order:1}}>Payout public key (66 chars hex)</label>
+      </span>
+    </div>
+    <div className='expand'>
+      <span>
+        <textarea name='body' style={{order:2}} />
+        <label style={{order:1}}>Content (markdown format, 20kb max)</label>
+      </span>
+    </div>
+    <div>
+      <span>
+        <input name='tags' style={{order:2}} type='text'
+          pattern='^( ?[^ ]+){1,3}$' />
+        <label style={{order:1}}>Tags (space separated words, 3 max)</label>
+      </span>
+    </div>
+    <div className='final'>
+      <span>
+        <button type='submit' form='new'>Submit</button>
+      </span>
+    </div>
   </form>
 )

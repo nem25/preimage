@@ -1,4 +1,5 @@
 import React from 'react'
+import Router from 'next/router'
 
 const reverseChildNodes = (node) => {
   const { parentNode, nextSibling } = node
@@ -33,7 +34,8 @@ const timeout = (ms) => {
 export default class Logo extends React.Component {
   state = {
     decodedText: '',
-    encodedText: '' 
+    encodedText: '',
+    encoding: false
   }
 
   componentDidMount () {
@@ -48,14 +50,23 @@ export default class Logo extends React.Component {
     })
   }
 
+  logoOnClick = () => {
+    Router.push('/')
+  }
+
   async startEncodeDecodeEffect () {
+    if (this.state.encoding) return
     const { text } = this.props
     await this.setState({
+      encoding: true,
       decodedText: text
     })
     await this.reencodeText(text)
     await this.encodeEffect()
     await this.decodeEffect()
+    await this.setState({
+      encoding: false
+    })
   }
 
   async transcodeEffect (origin, destination) {
@@ -105,8 +116,17 @@ export default class Logo extends React.Component {
             padding-left: 0;
             color: #777;
           }
+          .logo {
+            cursor: pointer;
+            user-select: none;
+            background-image: url(/static/img/bolt.png);
+            background-position: 9px 9px;
+            background-size: 21px;
+            background-repeat: no-repeat;
+            text-indent: 13px;
+          }
         `}</style>
-        <div ref='container'>
+        <div ref='container' className='logo' onClick={this.logoOnClick}>
           <span ref='decoded'>{text}</span>
           <span ref='encoded' className='encoded' />
         </div>

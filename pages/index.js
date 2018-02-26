@@ -3,7 +3,7 @@ import Layout from '../components/Layout'
 import Submit from '../components/Submit'
 
 export default () => (
-  <Layout>
+  <Layout title='Submission form'>
     <Submit />
   </Layout>
 )

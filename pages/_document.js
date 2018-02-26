@@ -30,6 +30,14 @@ export default class MyDocument extends Document {
             button {
               user-select: none;
             }
+            ::-moz-selection {
+              color: #000;
+              background: #ccc;
+            }
+            ::selection {
+              color: #000;
+              background: #ccc;
+            }
           `}</style>
           <link 
             href='https://fonts.googleapis.com/css?family=Inconsolata'

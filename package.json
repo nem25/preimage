@@ -1,6 +1,6 @@
 {
   "name": "preimage-server",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A pay-to-decrypt service using lnd",
   "main": "index.js",
   "scripts": {
@@ -21,9 +21,11 @@
     "graphql-tools": "latest",
     "js-salsa20": "latest",
     "lnd-graphql": "latest",
-    "mongoose": "^5.0.6",
+    "mongoose": "latest",
     "next": "latest",
+    "qrcode.react": "latest",
     "react": "latest",
+    "react-copy-to-clipboard": "latest",
     "react-dom": "latest",
     "subscriptions-transport-ws": "latest"
   },

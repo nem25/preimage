@@ -1,7 +1,7 @@
 import React from 'react'
 import Navigation from './Navigation'
 
-export default ({ children }) => (
+export default ({ children, title }) => (
   <div>
     <style jsx>{`
       div {
@@ -10,7 +10,7 @@ export default ({ children }) => (
         height: 100%;
       }
     `}</style>
-    <Navigation />
+    <Navigation title={title} />
     { children }
   </div>
 )

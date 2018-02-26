@@ -1,7 +1,7 @@
 import React from 'react'
 import Logo from './Logo'
 
-export default ({ children }) => (
+export default ({ children, title }) => (
   <div>
     <style jsx>{`
       div {
@@ -25,7 +25,7 @@ export default ({ children }) => (
       }
     `}</style>
     <header />
-    <span>Content submission form</span>
+    <span>{title}</span>
     <Logo text='preimage' /> 
     { children }
   </div>
