@@ -33,7 +33,7 @@ nextApp.prepare().then(() => {
     })
   })))
 
-  const urlEncodedBodyParser = bodyParser.urlencoded({ extended: false })
+  const urlEncodedBodyParser = bodyParser.urlencoded({ extended: false, limit: '24kb' })
 
   app.post('/new', urlEncodedBodyParser, async (req, res) => {
     const content = await rescueQuery(await graphql(
@@ -45,11 +45,9 @@ nextApp.prepare().then(() => {
     res.redirect(500)
   })
 
-  app.get('/:bodyHash([a-f0-9]{64})', async (req, res) => {
-      console.log(req.params.bodyHash)
-    const content = await rescueQuery(await graphql(
-      schema, getContent, null, context, { bodyHash: req.params.bodyHash }))
-    return nextApp.render(req, res, '/detail', { content })
+  app.get('/:bodyHash([a-f0-9]{64})', (req, res) => {
+    const { bodyHash } = req.params
+    return nextApp.render(req, res, '/detail', { bodyHash })
   })
 
   app.get('*', nextHandler)

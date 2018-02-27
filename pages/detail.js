@@ -1,17 +1,19 @@
 import React from 'react'
 import Layout from '../components/Layout'
-import Detail from '../components/Detail'
+import Detail from '../containers/Detail'
+import withData from '../lib/withData'
 
-export default class extends React.Component {
-  static getInitialProps ({ query: { content }}) {
-    return { content }
+export default withData(class extends React.Component {
+  static getInitialProps ({ query: { bodyHash }}) {
+    return { bodyHash }
   }
 
   render () {
+    const { bodyHash } = this.props
     return (
       <Layout title='Content reading'>
-        <Detail {...this.props.content} />
+        <Detail bodyHash={bodyHash} />
       </Layout>
     )
   }
-}
+})

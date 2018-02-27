@@ -1,5 +1,6 @@
 import React from 'react'
 import Router from 'next/router'
+import makeCancelable from 'makecancelable'
 
 const reverseChildNodes = (node) => {
   const { parentNode, nextSibling } = node
@@ -31,15 +32,27 @@ const timeout = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+const makeCancelableChain = (...chain) => {
+  const cancelableRecursion = (promise) => {
+    const cancelable = makeCancelable(
+      promise,
+      () => {
+        if (!cancelable.hasCanceled && chain.length) {
+          Object.assign(cancelable,
+            cancelableRecursion(chain.shift()()))
+        }
+      }
+    )
+    return cancelable
+  }
+  return cancelableRecursion(chain.shift()())
+}
+
 export default class Logo extends React.Component {
   state = {
     decodedText: '',
     encodedText: '',
     encoding: false
-  }
-
-  componentDidMount () {
-    this.startEncodeDecodeEffect()
   }
 
   async reencodeText (decodedText) {
@@ -50,23 +63,33 @@ export default class Logo extends React.Component {
     })
   }
 
-  logoOnClick = () => {
+  logoOnClick = async () => {
+    this.cancelEffect = this.startEncodeDecodeEffect()
+    await Router.prefetch('/')
     Router.push('/')
   }
 
-  async startEncodeDecodeEffect () {
-    if (this.state.encoding) return
+  componentWillUnmount () {
+    if (this.cancelEffect)
+      this.cancelEffect()
+  }
+
+  startEncodeDecodeEffect () {
+    if (this.state.encoding)
+      return () => null
     const { text } = this.props
-    await this.setState({
+    this.setState({
       encoding: true,
       decodedText: text
     })
-    await this.reencodeText(text)
-    await this.encodeEffect()
-    await this.decodeEffect()
-    await this.setState({
-      encoding: false
-    })
+    return makeCancelableChain(
+      () => this.reencodeText(text),
+      () => this.encodeEffect(),
+      () => this.decodeEffect(),
+      () => new Promise((resolve) => this.setState({
+        encoding: false
+      }, resolve))
+    )
   }
 
   async transcodeEffect (origin, destination) {

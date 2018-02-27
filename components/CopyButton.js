@@ -9,7 +9,6 @@ export default class CopyButton extends React.Component {
   onCopy = async () => {
     await this.setState({ copied: true })
     setTimeout(() => this.setState({ copied: false }), 10000)
-    this.refs.button.blur()
   }
 
   render () {
@@ -32,11 +31,12 @@ export default class CopyButton extends React.Component {
               min-height: 45px; 
               -webkit-tap-highlight-color: white;
             }
-            button:active,
-            button:focus {
-              outline: none;
+            button:active{
               background-color: #eee;
               color: #000;
+            }
+            button:focus {
+              outline: none;
             }
           `}</style>
           {this.state.copied ? 'Copied!' : children}

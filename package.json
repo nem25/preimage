@@ -1,6 +1,6 @@
 {
   "name": "preimage-server",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A pay-to-decrypt service using lnd",
   "main": "index.js",
   "scripts": {
@@ -12,24 +12,42 @@
   "author": "aynik",
   "license": "ISC",
   "dependencies": {
+    "apollo": "latest",
+    "apollo-cache-inmemory": "latest",
+    "apollo-client": "latest",
+    "apollo-link": "latest",
+    "apollo-link-context": "latest",
+    "apollo-link-error": "latest",
+    "apollo-link-http": "latest",
+    "apollo-link-ws": "latest",
     "apollo-server-express": "latest",
+    "apollo-utilities": "latest",
     "body-parser": "latest",
+    "bufferutil": "latest",
     "express": "latest",
     "graphql": "latest",
     "graphql-subscriptions": "latest",
     "graphql-tag": "latest",
     "graphql-tools": "latest",
+    "isomorphic-unfetch": "latest",
+    "isomorphic-ws": "latest",
     "js-salsa20": "latest",
     "lnd-graphql": "latest",
+    "makecancelable": "latest",
     "mongoose": "latest",
     "next": "latest",
+    "prop-types": "latest",
     "qrcode.react": "latest",
     "react": "latest",
+    "react-apollo": "latest",
     "react-copy-to-clipboard": "latest",
     "react-dom": "latest",
-    "subscriptions-transport-ws": "latest"
+    "react-remarkable": "latest",
+    "subscriptions-transport-ws": "latest",
+    "ws": "latest"
   },
   "devDependencies": {
+    "babel-plugin-transform-define": "^1.3.0",
     "mocha": "^5.0.1",
     "mockgoose": "^7.3.5"
   }

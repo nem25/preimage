@@ -6,6 +6,7 @@ export default (props) => (
       form {
         height: calc(100% - 40px);
         min-width: 320px;
+        padding: 16px 0 0;
       }
       div {
         min-height: 88px;
@@ -19,7 +20,7 @@ export default (props) => (
         width: 100%;
       }
       .expand {
-        height: calc(100% - 94px - (88px * 3));
+        height: calc(100% - 116px - (88px * 3));
         min-height: 275px;
       }
       .final {
