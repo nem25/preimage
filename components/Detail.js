@@ -1,5 +1,5 @@
 import React from 'react'
-import Markdown from 'react-remarkable'
+import Markdown from './Markdown'
 
 export default (props) => (
   <div>
@@ -8,8 +8,9 @@ export default (props) => (
         color: #ccc;
         min-width: 274px;
         line-height: 20px;
-        margin: 0 24px 0;
+        padding: 0.83em 16px;
         font-size: 0.9em;
+        overflow-y: hidden;
       }
       article h1,
       article h2,
@@ -120,6 +121,20 @@ export default (props) => (
       article sub {
         vertical-align: sub;
         top: -1px;
+      }
+      article figure {
+        margin: 0;
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%;
+      }
+      article figure iframe {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
       }
     `}</style>
     <article>

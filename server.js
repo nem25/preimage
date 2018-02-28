@@ -8,6 +8,9 @@ const { execute, graphql, subscribe } = require('graphql')
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
 const { SubscriptionServer } = require('subscriptions-transport-ws')
 
+const ExpressBrute = require('express-brute')
+const MongoStore = require('express-brute-mongo')
+
 const { graphqlExecutableSchema } = require('./lib/graphql')
 const { rescueQuery } = require('./lib/graphql/util')
 const { getContent } = require('./lib/graphql/queries')
@@ -23,7 +26,19 @@ nextApp.prepare().then(() => {
   const server = createServer(app)
   const { schema, context } = graphqlExecutableSchema
 
-  app.use('/graphql', bodyParser.json(), graphqlExpress(graphqlExecutableSchema))
+  const store = new MongoStore((ready) => {
+    const { connection } = require('mongoose')
+    const collection = connection.collection('throttles')
+    collection.ensureIndex({ expires: 1 }, { expireAfterSeconds: 0 })
+    ready(collection)
+  })
+
+  const throttler = new ExpressBrute(store)
+
+  app.use('/graphql',
+    bodyParser.json(),
+    graphqlExpress(graphqlExecutableSchema))
+
   app.get('/graphiql', graphiqlExpress((req) => ({
     endpointURL: '/graphql',
     subscriptionsEndpoint: url.format({
@@ -33,7 +48,8 @@ nextApp.prepare().then(() => {
     })
   })))
 
-  const urlEncodedBodyParser = bodyParser.urlencoded({ extended: false, limit: '24kb' })
+  const urlEncodedBodyParser = bodyParser
+    .urlencoded({ extended: false, limit: '24kb' })
 
   app.post('/new', urlEncodedBodyParser, async (req, res) => {
     const content = await rescueQuery(await graphql(
@@ -45,7 +61,7 @@ nextApp.prepare().then(() => {
     res.redirect(500)
   })
 
-  app.get('/:bodyHash([a-f0-9]{64})', (req, res) => {
+  app.get('/:bodyHash([a-f0-9]{64})', throttler.prevent, (req, res) => {
     const { bodyHash } = req.params
     return nextApp.render(req, res, '/detail', { bodyHash })
   })

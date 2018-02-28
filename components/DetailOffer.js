@@ -3,17 +3,16 @@ import QRCode from 'qrcode.react'
 import CopyButton from '../components/CopyButton'
 
 export default (props) => (
-  <div>
+  <article>
     <style jsx>{`
-      div {
-        height: calc(100% - 40px);
-        min-width: 320px;
-        padding: 16px 0 0;
-        color: #fff;
+      article {
+        min-width: 274px;
+        padding: 0.83em 16px;
       }
       h1 {
         text-align: center;
         font-size: 22px;
+        color: #fff;
       }
       h2 {
         font-style: none;
@@ -75,5 +74,5 @@ export default (props) => (
       Copy payment request
     </CopyButton>
     <a href={`lightning:${props.paymentRequest}`}>Pay with local wallet</a>
-  </div>
+  </article>
 )

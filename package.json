@@ -25,6 +25,8 @@
     "body-parser": "latest",
     "bufferutil": "latest",
     "express": "latest",
+    "express-brute": "latest",
+    "express-brute-mongo": "latest",
     "graphql": "latest",
     "graphql-subscriptions": "latest",
     "graphql-tag": "latest",
@@ -42,7 +44,8 @@
     "react-apollo": "latest",
     "react-copy-to-clipboard": "latest",
     "react-dom": "latest",
-    "react-remarkable": "latest",
+    "remarkable": "latest",
+    "remarkable-embed": "latest",
     "subscriptions-transport-ws": "latest",
     "ws": "latest"
   },
