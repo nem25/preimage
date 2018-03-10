@@ -1,6 +1,5 @@
 import React from 'react'
 import Router from 'next/router'
-import makeCancelable from 'makecancelable'
 
 const reverseChildNodes = (node) => {
   const { parentNode, nextSibling } = node
@@ -33,57 +32,77 @@ const timeout = (ms) => {
 }
 
 const makeCancelableChain = (...chain) => {
-  const cancelableRecursion = (promise) => {
-    const cancelable = makeCancelable(
-      promise,
-      () => {
-        if (!cancelable.hasCanceled && chain.length) {
-          Object.assign(cancelable,
-            cancelableRecursion(chain.shift()()))
-        }
+  let hasCanceled = false
+  const cancelPromise = new Promise((resolve, reject) => {
+    ;(async () => {
+      let val
+      while (!hasCanceled && chain.length) {
+        await chain.shift()(val).then((_val) => val = _val)
       }
-    )
-    return cancelable
+      resolve(val)
+    })()
+  })
+  cancelPromise.cancel = () => {
+    hasCanceled = true
   }
-  return cancelableRecursion(chain.shift()())
+  return cancelPromise
 }
 
 export default class Logo extends React.Component {
-  state = {
-    decodedText: '',
-    encodedText: '',
-    encoding: false
+  constructor (props) {
+    super(props)
+    this.state = {
+      decodedText: '',
+      encodedText: '',
+      encoding: false
+    }
+    this.bindRouteChangeStart()
+  } 
+
+  bindRouteChangeStart () {
+    Router.onRouteChangeStart = (url) => {
+      if (url !== Router.route) {
+        this.cycleEncodeDecodeEffect()
+      }
+    }
   }
 
   async reencodeText (decodedText) {
-    await this.setState({
+    return await new Promise((resolve) => this.setState({
       encodedText: decodedText.split('')
         .map((l) => caesarShift(l, 6 + Math.round(Math.random() * 13)))
         .join('')
-    })
+    }, resolve))
   }
 
-  logoOnClick = async () => {
-    this.cancelEffect = this.startEncodeDecodeEffect()
-    await Router.prefetch('/')
+  logoOnClick = () => { 
     Router.push('/')
   }
 
   componentWillUnmount () {
-    if (this.cancelEffect)
-      this.cancelEffect()
+    if (this.effectPromise) {
+      this.cyclingEffect = false
+      this.effectPromise.cancel()
+    }
+  }
+
+  async cycleEncodeDecodeEffect () {
+    this.cyclingEffect = true
+    while (this.cyclingEffect) {
+      await this.startEncodeDecodeEffect()
+      await timeout(100)
+    }
   }
 
   startEncodeDecodeEffect () {
-    if (this.state.encoding)
-      return () => null
-    const { text } = this.props
-    this.setState({
-      encoding: true,
-      decodedText: text
-    })
-    return makeCancelableChain(
-      () => this.reencodeText(text),
+    if (this.state.encoding) return Promise.resolve() 
+    return this.effectPromise = makeCancelableChain(
+      () => Promise.resolve(this.props.text),
+      (text) => new Promise((resolve) => this.setState({
+        encoding: true,
+        decodedText: text
+      }, resolve)).then(() => text),
+      (text) => this.reencodeText(text),
       () => this.encodeEffect(),
       () => this.decodeEffect(),
       () => new Promise((resolve) => this.setState({
@@ -94,6 +113,7 @@ export default class Logo extends React.Component {
 
   async transcodeEffect (origin, destination) {
     const { container } = this.refs
+    if (!container) return
     reverseChildNodes(container)
     const { children } = container
     children[1].innerHTML = origin
@@ -125,7 +145,7 @@ export default class Logo extends React.Component {
       <div>
         <style jsx>{`
           span:nth-child(1) {
-            padding-left: 16px;
+            padding-left: 18px;
           }
           span {
             color: #000;
@@ -133,11 +153,11 @@ export default class Logo extends React.Component {
             line-height: 40px;
             text-transform: uppercase;
             letter-spacing: 3px;
-            font-size: 18px;
+            font-size: 16px;
           }
           .encoded {
             padding-left: 0;
-            color: #777;
+            color: #333;
           }
           .logo {
             cursor: pointer;
@@ -147,6 +167,11 @@ export default class Logo extends React.Component {
             background-size: 21px;
             background-repeat: no-repeat;
             text-indent: 13px;
+          }
+          @media (max-width: 387px) {
+            span {
+              font-size: 13px;
+            }
           }
         `}</style>
         <div ref='container' className='logo' onClick={this.logoOnClick}>

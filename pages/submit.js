@@ -1,7 +1,7 @@
 import cookie from 'cookie'
 import React from 'react'
 import Layout from '../components/Layout'
-import Entries from '../containers/Entries'
+import Submit from '../components/Submit'
 import withData from '../lib/withData'
 
 const fetchIdentity = (source) => (
@@ -20,7 +20,7 @@ export default withData(class extends React.Component {
     const { identity } = this.props
     return (
       <Layout identity={identity} >
-        <Entries />
+        <Submit identity={identity} />
       </Layout>
     )
   }

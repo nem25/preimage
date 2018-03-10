@@ -13,8 +13,7 @@ const MongoStore = require('express-brute-mongo')
 
 const { graphqlExecutableSchema } = require('./lib/graphql')
 const { rescueQuery } = require('./lib/graphql/util')
-const { getContent } = require('./lib/graphql/queries')
-const { submitContent } = require('./lib/graphql/mutations')
+const { submitContent, requestPayout } = require('./lib/graphql/mutations')
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
@@ -33,7 +32,9 @@ nextApp.prepare().then(() => {
     ready(collection)
   })
 
-  const throttler = new ExpressBrute(store)
+  const throttler = new ExpressBrute(store, {
+    freeRetries: 10
+  })
 
   app.use('/graphql',
     bodyParser.json(),
@@ -56,6 +57,16 @@ nextApp.prepare().then(() => {
       schema, submitContent, null, context, req.body))
     if (content.id) {
       res.redirect(301, `/${content.id}`)
+      return
+    }
+    res.redirect(500)
+  })
+
+  app.post('/payout', urlEncodedBodyParser, async (req, res) => {
+    const payout = await rescueQuery(await graphql(
+      schema, requestPayout, null, context, req.body))
+    if (payout.sent) {
+      res.redirect(301, `/`)
       return
     }
     res.redirect(500)

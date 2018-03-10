@@ -6,7 +6,7 @@ import DetailOffer from '../components/DetailOffer'
 
 class DetailContainer extends React.Component {
   render () {
-    const { getContent, decryptData } = this.props
+    const { getContent, decryptData, identity } = this.props
     if (decryptData && !decryptData.loading && decryptData.decryptData) {
       const body = decryptData.decryptData.data
       return <Detail body={body} />
@@ -20,8 +20,8 @@ class DetailContainer extends React.Component {
 }
 
 const getContent = gql`
-  query getContent($bodyHash:String!) {
-    getContent(bodyHash:$bodyHash) {
+  query getContent($bodyHash:String!,$sponsor:String) {
+    getContent(bodyHash:$bodyHash,sponsor:$sponsor) {
       title
       price
       bodyHash,
@@ -54,9 +54,10 @@ export default compose(
     skip: ({ bodyHash }) => (
       !bodyHash
     ),
-    options: ({ bodyHash }) => ({
+    options: ({ bodyHash, identity }) => ({
       variables: {
-        bodyHash
+        bodyHash,
+        sponsor: identity
       }
     })
   }),

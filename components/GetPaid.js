@@ -1,0 +1,108 @@
+import React from 'react'
+import Router from 'next/router'
+
+export default class GetPaid extends React.Component {
+  constructor (props) {
+    super(props)
+  }
+
+  onSubmit = () => {
+    const { router } = Router
+    router.events.emit('routeChangeStart', '/payout')
+  }
+
+  render () {
+    const { identity } = this.props
+    return (
+      <form id='payout' action='/payout' method='post' onSubmit={this.onSubmit}>
+        <style jsx>{`
+          form {
+            height: calc(100% - 56px);
+            min-width: 320px;
+            padding: 16px 0 0;
+          }
+          div {
+            min-height: 88px;
+            display: flex;
+            position: relative;
+            top: 0;
+          }
+          span {
+            display: inline-flex;
+            flex-direction: column;
+            width: 100%;
+          }
+          .expand {
+            height: calc(100% - 116px);
+            min-height: 250px;
+          }
+          .final {
+            padding-top: 6px;
+          }
+          textarea, section {
+            margin: 0 16px 0;
+          }
+          textarea {
+            border: 1px solid #464646;
+            border-radius: 2px;
+            background: #000;
+            color: #c3c3c3;
+            font-size: 14px;
+            width: calc(100% - 52px);
+            line-height: 18px;
+            padding: 10px;
+            max-width: 560px;
+          }
+          textarea:focus {
+            outline: none;
+          }
+          textarea {
+            height: calc(100% - 22px);
+            min-height: 182px;
+          }
+          label {
+            color: #c3c3c3;
+            margin: 16px;
+            display: block;
+            font-size: 14px;
+            text-indent: 2px;
+          }
+          textarea:focus,
+          textarea:focus + label {
+            border-color: #888;
+            color: #888;
+          }
+          button {
+            width: 100px;
+            line-height: 40px;
+            background: #000;
+            border: 1px solid #464646;
+            border-radius: 2px;
+            color: #c3c3c3;
+            margin: 20px 0 20px 16px;
+            font-size: 14px;
+            min-height: 45px; 
+            -webkit-tap-highlight-color: white;
+          }
+          button:active,
+          button:focus {
+            outline: none;
+            background-color: #eee;
+            color: #000;
+          }
+        `}</style>
+        <div className='expand'>
+          <span>
+            <textarea name='paymentRequest' style={{order:2}} />
+            <label style={{order:1}}>Payment request</label>
+          </span>
+        </div>
+        <div className='final'>
+          <span>
+            <button type='submit' form='payout'>Get paid</button>
+          </span>
+        </div>
+      </form>
+    )
+  }
+}

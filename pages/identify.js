@@ -1,7 +1,7 @@
 import cookie from 'cookie'
 import React from 'react'
 import Layout from '../components/Layout'
-import Entries from '../containers/Entries'
+import Identify from '../components/Identify'
 import withData from '../lib/withData'
 
 const fetchIdentity = (source) => (
@@ -9,9 +9,8 @@ const fetchIdentity = (source) => (
 )
 
 export default withData(class extends React.Component {
-  static getInitialProps ({ req, query: { bodyHash }}) {
+  static getInitialProps ({ req }) {
     return {
-      bodyHash,
       identity: fetchIdentity(process.browser ? document.cookie : req.headers.cookie)
     }
   }
@@ -19,8 +18,8 @@ export default withData(class extends React.Component {
   render () {
     const { identity } = this.props
     return (
-      <Layout identity={identity} >
-        <Entries />
+      <Layout identity={identity}>
+        <Identify identity={identity} />
       </Layout>
     )
   }

@@ -43,9 +43,9 @@ export default (props) => (
         display: block;
         width: 200px;
         background: #000;
-        border: 1px solid #666;
+        border: 1px solid #464646;
         border-radius: 2px;
-        color: #666;
+        color: #c3c3c3;
         margin: 20px auto;
         font-size: 14px;
         min-height: 45px; 
