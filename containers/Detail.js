@@ -6,10 +6,10 @@ import DetailOffer from '../components/DetailOffer'
 
 class DetailContainer extends React.Component {
   render () {
-    const { getContent, decryptData, identity } = this.props
+    const { bodyHash, getContent, decryptData, identity } = this.props
     if (decryptData && !decryptData.loading && decryptData.decryptData) {
       const body = decryptData.decryptData.data
-      return <Detail body={body} />
+      return <Detail bodyHash={bodyHash} body={body} />
     }
     if (getContent && !getContent.loading && getContent.getContent) {
       const { title, price, paymentRequest } = getContent.getContent
@@ -20,7 +20,7 @@ class DetailContainer extends React.Component {
 }
 
 const getContent = gql`
-  query getContent($bodyHash:String!,$sponsor:String) {
+  query getContent($bodyHash:HashString!,$sponsor:PubKeyString) {
     getContent(bodyHash:$bodyHash,sponsor:$sponsor) {
       title
       price
@@ -33,7 +33,7 @@ const getContent = gql`
 `
 
 const decryptionKey = gql`
-  subscription decryptionKey($keyHash:String!) {
+  subscription decryptionKey($keyHash:HashString!) {
     decryptionKey(keyHash:$keyHash) {
       key
     }
@@ -41,7 +41,7 @@ const decryptionKey = gql`
 `
 
 const decryptData = gql`
-  query decryptData($key:String!,$encryptedData:String!) {
+  query decryptData($key:HashString!,$encryptedData:String!) {
     decryptData(key:$key,encryptedData:$encryptedData) {
       data
     }

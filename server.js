@@ -33,7 +33,8 @@ nextApp.prepare().then(() => {
   })
 
   const throttler = new ExpressBrute(store, {
-    freeRetries: 10
+    freeRetries: 100,       // 100 reqs
+    lifetime: 5 * 60 * 1e3  // 5 mins
   })
 
   app.use('/graphql',
@@ -59,7 +60,8 @@ nextApp.prepare().then(() => {
       res.redirect(301, `/${content.id}`)
       return
     }
-    res.redirect(500)
+    console.error(content)
+    res.redirect('/')
   })
 
   app.post('/payout', urlEncodedBodyParser, async (req, res) => {
@@ -69,7 +71,8 @@ nextApp.prepare().then(() => {
       res.redirect(301, `/`)
       return
     }
-    res.redirect(500)
+    console.error(payout)
+    res.redirect('/')
   })
 
   app.get('/:bodyHash([a-f0-9]{64})', throttler.prevent, (req, res) => {

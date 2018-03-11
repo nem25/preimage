@@ -2,10 +2,6 @@ import React from 'react'
 import Router from 'next/router'
 
 export default class PayoutButton extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
   onClick = async () => {
     const { amount } = this.props
     if (amount !== 0) {
@@ -33,7 +29,7 @@ export default class PayoutButton extends React.Component {
           button:focus {
             outline: none;
           }
-          @media (max-width: 387px) {
+          @media (max-width: 421px) {
             button {
               font-size: 12px;
             }

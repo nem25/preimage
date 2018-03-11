@@ -7,26 +7,59 @@ export default class Submit extends React.Component {
     super(props)
     const { identity } = this.props
     this.state = {
+      title: '',
+      price: '',
       owner: identity || '',
+      body: '',
+      tags: '',
       sponsoring: false
     }
   }
 
-  onSubmit = () => {
+  onSubmit = (e) => {
+    if (!this.checkValidity()) {
+      e.preventDefault()
+      return
+    }
     const { router } = Router
     router.events.emit('routeChangeStart', '/new')
   }
 
-  onOwnerChange = (e) => {
+  onFieldChange = (field) => (e) => {
+    e.target.setCustomValidity('')
     this.setState({
-      owner: e.target.value
+      [field]: e.target.value
     })
+    if (!e.target.value) {
+      e.target.setCustomValidity('required')
+    }
+    const pattern = e.target.getAttribute('pattern')
+    if (pattern && !e.target.value.match(new RegExp(pattern, 'i'))) {
+      e.target.setCustomValidity('invalid')
+    }
   }
 
   onSponsoringToggle = (value) => {
     this.setState({
       sponsoring: !value
     })
+  }
+
+  checkValidity = () => {
+    const { title, price, owner, body, tags } = this.refs
+    const fields = [title, price, owner, body, tags]
+    let valid = true
+    for (let f = 0, l = fields.length; f < l; f++) {
+      if (!fields[f].validity.valid) {
+        valid = false
+        continue
+      }
+      if (!fields[f].value) {
+        fields[f].setCustomValidity('required')
+        valid = false
+      }
+    }
+    return valid
   }
 
   render () {
@@ -91,7 +124,8 @@ export default class Submit extends React.Component {
             font-size: 14px;
             text-indent: 2px;
           }
-          input:invalid {
+          input:invalid,
+          textarea:invalid {
             border-color: red !important;
           }
           input[type='number']::-webkit-outer-spin-button,
@@ -131,33 +165,38 @@ export default class Submit extends React.Component {
         `}</style>
         <div>
           <span style={{width:'62%'}}>
-            <input name='title' style={{order:2}} type='text' pattern='^.{1,140}$' />
+            <input ref='title' name='title' style={{order:2}}
+              type='text' pattern='^.{1,140}$' value={this.state.title}
+              onChange={this.onFieldChange('title')} />
             <label style={{order:1}}>Title (140 chars max)</label>
           </span>
           <span style={{width:'38%'}}>
-            <input name='price' style={{order:2}}
-              type='number' step='1' max='2100000000000000' />
-            <label style={{order:1}}>Price (sats)</label>
+            <input ref='price' name='price' style={{order:2}}
+              type='number' step='1' max='2100000000000000' value={this.state.price}
+              onChange={this.onFieldChange('price')} />
+            <label style={{order:1}}>Price (SATs)</label>
           </span>
         </div>
         <div>
           <span>
-            <input name='owner' style={{order:2}} type='text'
+            <input ref='owner' name='owner' style={{order:2}} type='text'
               pattern='^[a-f0-9]{66}$' value={this.state.owner}
-              onChange={this.onOwnerChange} />
+              onChange={this.onFieldChange('owner')} />
             <label style={{order:1}}>Payout public key (66 chars hex)</label>
           </span>
         </div>
         <div className='expand'>
           <span>
-            <textarea name='body' style={{order:2}} />
+            <textarea ref='body' name='body' style={{order:2}} value={this.state.body}
+              pattern='^[\s\S]{1,20000}$' onChange={this.onFieldChange('body')} />
             <label style={{order:1}}>Content (markdown format, 20kb max)</label>
           </span>
         </div>
         <div>
           <span style={{width:'calc(100% - 100px)'}}>
-            <input name='tags' style={{order:2}} type='text'
-              pattern='^( ?[^ ]+){1,3}$' />
+            <input ref='tags' name='tags' style={{order:2}} type='text'
+              pattern='^( ?[^ ]+){1,3}$' value={this.state.tags}
+              onChange={this.onFieldChange('tags')} />
             <label style={{order:1}}>Tags (3 words max)</label>
           </span>
           <span style={{width:'100px'}}>

@@ -51,7 +51,7 @@ export default class IdentifyButton extends React.Component {
             border-right: 1px solid #eee;
             border-left: 1px solid #eee;
           }
-          @media (max-width: 387px) {
+          @media (max-width: 421px) {
             button {
               font-size: 12px;
             }

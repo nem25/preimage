@@ -76,7 +76,7 @@ describe('public decryption', () => {
     it('encrypts some data', async () => {
       encryptDataResult = await rescueQuery(await graphql(schema, `
         query encryptData(
-          $owner:String!,
+          $owner:PubKeyString!,
           $data:String!,
           $price:Int!
         ) {
@@ -140,7 +140,7 @@ describe('public decryption', () => {
       const ring = await db.findRingBy({ expiresAt: { $exists: true }}) 
       const subscription = await subscribe(schema, gql`
         subscription decryptionKey(
-          $keyHash:String!
+          $keyHash:HashString!
         ) {
           decryptionKey(
             keyHash:$keyHash
@@ -166,7 +166,7 @@ describe('public decryption', () => {
     it('decrypts data using decryption key', async () => {
       decryptDataResult = await rescueQuery(await graphql(schema, `
         query decryptData(
-          $key:String!,
+          $key:HashString!,
           $encryptedData:String!
         ) {
           decryptData(
@@ -197,7 +197,7 @@ describe('private decryption', () => {
       await mongoose.models.Ring.remove({ expiresAt: { $exists: true }})
       encryptDataPaymentResult = await rescueQuery(await graphql(schema, `
         query encryptDataPayment(
-          $owner:String!,
+          $owner:PubKeyString!,
           $data:String!,
           $price:Int!
         ) {
@@ -238,7 +238,7 @@ describe('private decryption', () => {
       const ring = await db.findRingBy({ expiresAt: { $exists: true }}) 
       const subscription = await subscribe(schema, gql`
         subscription decryptionKey(
-          $keyHash:String!
+          $keyHash:HashString!
         ) {
           decryptionKey(
             keyHash:$keyHash
@@ -264,7 +264,7 @@ describe('private decryption', () => {
     it('decrypts data using decryption key', async () => {
       decryptDataResult = await rescueQuery(await graphql(schema, `
         query decryptData(
-          $key:String!,
+          $key:HashString!,
           $encryptedData:String!
         ) {
           decryptData(
@@ -292,7 +292,7 @@ describe('payout', () => {
     it('sends payout', async () => {
       requestPayoutResult = await rescueQuery(await graphql(schema, `
         mutation requestPayout(
-          $paymentRequest:String!
+          $paymentRequest:TersePayReqString!
         ) {
           requestPayout(
             paymentRequest:$paymentRequest
@@ -302,7 +302,7 @@ describe('payout', () => {
           }
         }
       `, null, null, {
-          paymentRequest: 'lntb1234'
+          paymentRequest: 'lntb1' + new Array(180).fill(0).join('')
       }))
       assert(requestPayoutResult)
     })

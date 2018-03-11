@@ -4,11 +4,49 @@ import Router from 'next/router'
 export default class GetPaid extends React.Component {
   constructor (props) {
     super(props)
+    this.state = {
+      paymentRequest: ''
+    }
   }
 
-  onSubmit = () => {
+  onSubmit = (e) => {
+    if (!this.checkValidity()) {
+      e.preventDefault()
+      return
+    }
     const { router } = Router
     router.events.emit('routeChangeStart', '/payout')
+  }
+
+  onTextAreaChange = (field) => (e) => {
+    e.target.setCustomValidity('')
+    this.setState({
+      [field]: e.target.value
+    })
+    if (!e.target.value) {
+      e.target.setCustomValidity('required')
+    }
+    const pattern = e.target.getAttribute('pattern')
+    if (!e.target.value.match(new RegExp(pattern, 'i'))) {
+      e.target.setCustomValidity('invalid')
+    }
+  }
+
+  checkValidity = () => {
+    const { paymentRequest } = this.refs
+    const fields = [paymentRequest]
+    let valid = true
+    for (let f = 0, l = fields.length; f < l; f++) {
+      if (!fields[f].validity.valid) {
+        valid = false
+        continue
+      }
+      if (!fields[f].value) {
+        fields[f].setCustomValidity('required')
+        valid = false
+      }
+    }
+    return valid
   }
 
   render () {
@@ -32,10 +70,6 @@ export default class GetPaid extends React.Component {
             flex-direction: column;
             width: 100%;
           }
-          .expand {
-            height: calc(100% - 116px);
-            min-height: 250px;
-          }
           .final {
             padding-top: 6px;
           }
@@ -52,13 +86,13 @@ export default class GetPaid extends React.Component {
             line-height: 18px;
             padding: 10px;
             max-width: 560px;
+            min-height: 55px;
           }
           textarea:focus {
             outline: none;
           }
-          textarea {
-            height: calc(100% - 22px);
-            min-height: 182px;
+          textarea:invalid {
+            border-color: red !important;
           }
           label {
             color: #c3c3c3;
@@ -91,10 +125,13 @@ export default class GetPaid extends React.Component {
             color: #000;
           }
         `}</style>
-        <div className='expand'>
+        <div>
           <span>
-            <textarea name='paymentRequest' style={{order:2}} />
-            <label style={{order:1}}>Payment request</label>
+            <textarea ref='paymentRequest' name='paymentRequest' style={{order:2}}
+              pattern='^(lightning:)?(ln(bc|tb|sb)1)[023456789acdefghjklmnpqrstuvwxyz]{1,180}$'
+              value={this.state.paymentRequest}
+              onChange={this.onTextAreaChange('paymentRequest')} />
+            <label style={{order:1}}>Payment request (no memo, 0 value)</label>
           </span>
         </div>
         <div className='final'>

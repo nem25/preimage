@@ -168,7 +168,7 @@ export default class Logo extends React.Component {
             background-repeat: no-repeat;
             text-indent: 13px;
           }
-          @media (max-width: 387px) {
+          @media (max-width: 421px) {
             span {
               font-size: 13px;
             }

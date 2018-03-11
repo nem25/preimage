@@ -79,7 +79,10 @@ describe('objects', async () => {
     describe('createPayment', () => {
       it('instantiates a payment', async () => {
         payment = await db.createPayment({
-          owner: owner._id,
+          recipient: {
+            type: 'Owner',
+            item: owner._id,
+          },
           amount: 1110
         })
         assert(payment)
@@ -87,8 +90,8 @@ describe('objects', async () => {
       it('payment._id is ObjectId', () => {
         assert.equal(payment._id.constructor, mongoose.Types.ObjectId)
       })
-      it('payment.owner is owner._id', () => {
-        assert.equal(payment.owner, owner._id)
+      it('payment.recipient.item is owner._id', () => {
+        assert.equal(payment.recipient.item, owner._id)
       })
       it('payment.amount is int', () => {
         assert.equal(payment.amount, 1110)
@@ -122,10 +125,10 @@ describe('objects', async () => {
         assert.equal(foundData._id.toString(), data._id.toString())
       })
     })
-    describe('findPaymentsByOwnerBy', () => {
+    describe('findPaymentsByRecipientBy', () => {
       let foundPayments
       it('finds payments by owner by pubKey', async () => {
-        foundPayments = await db.findPaymentsByOwnerBy({ pubKey: owner.pubKey })
+        foundPayments = await db.findPaymentsByRecipientBy({ pubKey: owner.pubKey })
         assert(foundPayments)
         assert.equal(foundPayments.length, 1)
       })
@@ -153,10 +156,10 @@ describe('objects', async () => {
         assert.equal(foundRing._id.toString(), ring._id.toString())
       })
     })
-    describe('deletePaymentsByOwnerBy', () => {
+    describe('deletePaymentsByRecipientBy', () => {
       let foundPayments
       it('deletes payments by owner pubKey', async () => {
-        foundPayments = await db.deletePaymentsByOwnerBy({
+        foundPayments = await db.deletePaymentsByRecipientBy({
           pubKey: owner.pubKey 
         }) 
         assert(foundPayments)

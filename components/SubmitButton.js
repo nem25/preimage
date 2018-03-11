@@ -2,11 +2,7 @@ import React from 'react'
 import Router from 'next/router'
 
 export default class SubmitButton extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
-  onClick = async () => {
+  onClick = () => {
     Router.push('/submit')
   }
 
@@ -36,7 +32,7 @@ export default class SubmitButton extends React.Component {
             background-size: 18px;
             background-repeat: no-repeat;
           }
-          @media (max-width: 387px) {
+          @media (max-width: 421px) {
             .write {
               width: 32px;
               background-position: 12px 8px;
@@ -44,8 +40,7 @@ export default class SubmitButton extends React.Component {
             }
           }
         `}</style>
-        <button className='write' onClick={this.onClick}>
-        </button>
+        <button className='write' onClick={this.onClick} />
       </div>
     )
   }

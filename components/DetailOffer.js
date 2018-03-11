@@ -1,5 +1,4 @@
 import React from 'react'
-import QRCode from 'qrcode.react'
 import CopyButton from '../components/CopyButton'
 
 export default (props) => (
@@ -66,7 +65,10 @@ export default (props) => (
     <h1>{props.title}</h1>
     <figure>
       <span>
-        <QRCode value={`lightning:${props.paymentRequest}`} size={256} />
+        <img src={
+          'https://chart.apis.google.com/chart?cht=qr&chs=256x256&chl=' +
+          `lightning:${props.paymentRequest}`
+        } />
       </span>
     </figure>
     <h2>{props.price} SAT</h2> 
