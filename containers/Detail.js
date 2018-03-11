@@ -57,7 +57,7 @@ export default compose(
     options: ({ bodyHash, identity }) => ({
       variables: {
         bodyHash,
-        sponsor: identity
+        sponsor: identity || null
       }
     })
   }),

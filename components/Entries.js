@@ -41,6 +41,7 @@ export default class Entries extends React.Component {
             border: none;
           }
           a {
+            width: 100%;
             color: inherit;
             text-decoration: none;
             display: inline-flex;
