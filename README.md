@@ -15,7 +15,7 @@ Just fork and clone this repository.
 $ npm run dev
 ```
 
-## Start production (uses https)
+## Start production (client side expects https, use nginx + let's encrypt or similar to serve)
 
 ```shell
   $ rm -rf node_modules/.cache/babel-loader .next # cache sucks
