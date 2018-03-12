@@ -128,7 +128,7 @@ export default class GetPaid extends React.Component {
         <div>
           <span>
             <textarea ref='paymentRequest' name='paymentRequest' style={{order:2}}
-              pattern='^(lightning:)?(ln(bc|tb|sb)1)[023456789acdefghjklmnpqrstuvwxyz]{1,180}$'
+              pattern='^(lightning:)?(ln(bc|tb|sb)1)[023456789acdefghjklmnpqrstuvwxyz]{1,2000}$'
               value={this.state.paymentRequest}
               onChange={this.onTextAreaChange('paymentRequest')} />
             <label style={{order:1}}>Payment request (no memo, 0 value)</label>
