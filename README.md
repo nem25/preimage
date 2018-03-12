@@ -19,7 +19,7 @@ $ npm run dev
 
 ```shell
   $ rm -rf node_modules/.cache/babel-loader .next # cache sucks
-  $ HOST=<production-hostname> npm run build
+  $ LND_PEER=<pubkey@host:port> HOST=<production-hostname> npm run build
   $ npm run start
 ```
 

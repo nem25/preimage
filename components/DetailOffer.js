@@ -76,5 +76,9 @@ export default (props) => (
       Copy payment request
     </CopyButton>
     <a href={`lightning:${props.paymentRequest}`}>Pay with local wallet</a>
+    { process.env.LND_PEER &&
+      <CopyButton text={process.env.LND_PEER}>
+        Copy peer address
+      </CopyButton> }
   </article>
 )
