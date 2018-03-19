@@ -1,5 +1,6 @@
 import React from 'react'
 import Router from 'next/router'
+import Link from 'next/link'
 
 const reverseChildNodes = (node) => {
   const { parentNode, nextSibling } = node
@@ -73,10 +74,6 @@ export default class Logo extends React.Component {
         .map((l) => caesarShift(l, 6 + Math.round(Math.random() * 13)))
         .join('')
     }, resolve))
-  }
-
-  logoOnClick = () => { 
-    Router.push('/')
   }
 
   componentWillUnmount () {
@@ -168,16 +165,23 @@ export default class Logo extends React.Component {
             background-repeat: no-repeat;
             text-indent: 13px;
           }
+          a {
+            text-decoration: none;
+          }
           @media (max-width: 421px) {
             span {
               font-size: 13px;
             }
           }
         `}</style>
-        <div ref='container' className='logo' onClick={this.logoOnClick}>
-          <span ref='decoded'>{text}</span>
-          <span ref='encoded' className='encoded' />
-        </div>
+        <Link href={`/`}>
+          <a>
+            <div ref='container' className='logo'>
+              <span ref='decoded'>{text}</span>
+              <span ref='encoded' className='encoded' />
+            </div>
+          </a>
+        </Link>
       </div>
     )
   }

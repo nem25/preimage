@@ -99,10 +99,6 @@ nextApp.prepare().then(() => {
     res.redirect(301, `/`)
   ))
 
-  app.get('/', (req, res) => {
-    return nextApp.render(req, res, '/entries', {})
-  })
-
   app.get('*', nextHandler)
 
   const subscriptions = new SubscriptionServer(
