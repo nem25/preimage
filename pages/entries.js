@@ -9,18 +9,18 @@ const fetchIdentity = (source) => (
 )
 
 export default withData(class extends React.Component {
-  static getInitialProps ({ req, query: { bodyHash }}) {
+  static getInitialProps ({ req, query: { tags }}) {
     return {
-      bodyHash,
+      tags,
       identity: fetchIdentity(process.browser ? document.cookie : req.headers.cookie)
     }
   }
 
   render () {
-    const { identity } = this.props
+    const { identity, tags } = this.props
     return (
       <Layout identity={identity} >
-        <Entries />
+        <Entries tags={tags} />
       </Layout>
     )
   }

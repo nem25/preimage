@@ -80,6 +80,29 @@ nextApp.prepare().then(() => {
     return nextApp.render(req, res, '/detail', { bodyHash })
   })
 
+  app.get('/@/:x([^ ]+)/:y([^ ]+)/:z([^ ]+)', (req, res) => {
+    const { x, y, z } = req.params
+    return nextApp.render(req, res, '/entries', { tags: [x, y, z] })
+  })
+
+  app.get('/@/:x([^ ]+)/:y([^ ]+)', (req, res) => {
+    const { x, y } = req.params
+    return nextApp.render(req, res, '/entries', { tags: [x, y] })
+  })
+
+  app.get('/@/:x([^ ]+)', (req, res) => {
+    const { x } = req.params
+    return nextApp.render(req, res, '/entries', { tags: [x] })
+  })
+
+  app.get('/@', (req, res) => (
+    res.redirect(301, `/`)
+  ))
+
+  app.get('/', (req, res) => {
+    return nextApp.render(req, res, '/entries', {})
+  })
+
   app.get('*', nextHandler)
 
   const subscriptions = new SubscriptionServer(

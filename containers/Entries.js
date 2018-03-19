@@ -15,8 +15,8 @@ class EntriesContainer extends React.Component {
 }
 
 const getContents = gql`
-  query getContents {
-    getContents {
+  query getContents($tags:[String]) {
+    getContents(tags:$tags) {
       title
       price
       purchased
@@ -26,5 +26,10 @@ const getContents = gql`
 `
 
 export default graphql(getContents, {
-  name: 'getContents'
+  name: 'getContents',
+  options: ({ tags }) => ({
+    variables: {
+      tags
+    }
+  })
 })(EntriesContainer)

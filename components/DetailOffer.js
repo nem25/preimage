@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import CopyButton from '../components/CopyButton'
 
 export default (props) => (
@@ -54,6 +55,12 @@ export default (props) => (
         font-size: 14px;
         line-height: 45px;
       }
+      .tags {
+        border: none;
+        margin: 0 auto;
+        min-height: auto;
+        line-height: normal;
+      }
       a:active {
         background-color: #eee;
         color: #000;
@@ -63,6 +70,13 @@ export default (props) => (
       }
     `}</style>
     <h1>{props.title}</h1>
+    {props.tags && props.tags.length && (
+      <h2>
+        <Link href={`/@/${props.tags.join('/')}`}>
+          <a className='tags'>@/{props.tags.join('/')}</a>
+        </Link>
+      </h2>
+    )}
     <figure>
       <span>
         <img src={

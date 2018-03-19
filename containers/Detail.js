@@ -12,8 +12,9 @@ class DetailContainer extends React.Component {
       return <Detail bodyHash={bodyHash} body={body} />
     }
     if (getContent && !getContent.loading && getContent.getContent) {
-      const { title, price, paymentRequest } = getContent.getContent
-      return <DetailOffer title={title} price={price} paymentRequest={paymentRequest} />
+      const { title, price, tags, paymentRequest } = getContent.getContent
+      return <DetailOffer title={title} price={price} tags={tags}
+        paymentRequest={paymentRequest} />
     }
     return null
   }
@@ -24,7 +25,8 @@ const getContent = gql`
     getContent(bodyHash:$bodyHash,sponsor:$sponsor) {
       title
       price
-      bodyHash,
+      tags
+      bodyHash
       paymentRequest
       preimageHash
       encryptedData
