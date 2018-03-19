@@ -12,6 +12,8 @@ Just fork and clone this repository.
 ## Start development
 
 ```shell
+$ npm install
+
 $ npm run dev
 ```
 
