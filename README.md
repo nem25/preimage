@@ -4,6 +4,7 @@
 
 - Node v9 (or any other with support for `--harmony_async_iteration`)
 - Mongodb (localhost:27017 or define `process.env.MONGODB_URI`)
+- Lnd
 
 ## Installation
 
