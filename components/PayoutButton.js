@@ -19,7 +19,7 @@ export default class PayoutButton extends React.Component {
             padding: 0 10px;
             line-height: 30px;
             background: transparent;
-            color: #666;
+            color: #000;
             border: none;
             font-size: 13px;
             min-height: 32px;

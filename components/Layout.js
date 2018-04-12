@@ -9,7 +9,6 @@ export default ({ children, identity }) => (
   <div>
     <style jsx>{`
       div {
-        max-width: 612px;
         margin: 0 auto;
         height: 100%;
       }

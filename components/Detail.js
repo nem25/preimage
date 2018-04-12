@@ -34,6 +34,8 @@ export default class extends React.Component {
       <div>
         <style jsx global>{`
           article {
+            max-width: 580px;
+            margin: 0 auto;
             color: #ccc;
             min-width: 274px;
             line-height: 20px;

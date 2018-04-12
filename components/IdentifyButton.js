@@ -38,7 +38,7 @@ export default class IdentifyButton extends React.Component {
             line-height: 30px;
             background: transparent;
             border: none;
-            color: #666;
+            color: #000;
             font-size: 13px;
             min-height: 32px;
             margin-top: 4px;
@@ -48,8 +48,8 @@ export default class IdentifyButton extends React.Component {
             outline: none;
           }
           .identify {
-            border-right: 1px solid #eee;
-            border-left: 1px solid #eee;
+            border-right: 1px dotted #666;
+            border-left: 1px dotted #666;
           }
           @media (max-width: 421px) {
             button {

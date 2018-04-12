@@ -60,6 +60,8 @@ export default class GetPaid extends React.Component {
             padding: 16px 0 0;
           }
           div {
+            margin: 0 auto;
+            max-width: 580px;
             min-height: 88px;
             display: flex;
             position: relative;

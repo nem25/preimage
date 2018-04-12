@@ -5,8 +5,9 @@ export default ({ children }) => (
   <div>
     <style jsx>{`
       div {
+        max-width: 612px;
+        margin: 0 auto;
         height: 40px;
-        background-color: #fff;
       }
       header {
         position: absolute;
@@ -15,7 +16,7 @@ export default ({ children }) => (
         width: 100%;
         height: 40px;
         z-index: -1;
-        background-color: #fff;
+        background: linear-gradient(to right, #ccc, #fff, #ccc);
       }
       span {
         line-height: 40px;

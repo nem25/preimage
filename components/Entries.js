@@ -15,13 +15,11 @@ export default class Entries extends React.Component {
           div {
             height: calc(100% - 56px);
             min-width: 320px;
-            padding: 16px 0 0;
           }
           ul {
             padding-left: 0px;
             margin: 0;
-            margin-left: 13px;
-            width: calc(100% - 26px);
+            width: 100%;
           }
           li {
             min-height: 48px;
@@ -33,9 +31,12 @@ export default class Entries extends React.Component {
             color: #eee;
           }
           li:hover {
-            background: #fff;
+            background: linear-gradient(to right, #ccc, #fff, #ccc);
             color: #000;
             cursor: pointer;
+          }
+          li:first-child {
+            border-top: 1px solid #333;
           }
           li:last-child {
             border: none;
@@ -44,8 +45,12 @@ export default class Entries extends React.Component {
             width: 100%;
             color: inherit;
             text-decoration: none;
-            display: inline-flex;
             -webkit-tap-highlight-color: white;
+          }
+          summary {
+            margin: 0 auto;
+            max-width: 612px;
+            display: flex;
           }
           span {
             display: inline-flex;
@@ -94,13 +99,15 @@ export default class Entries extends React.Component {
             <li key={n}>
               <Link href={`/${content.bodyHash}`}>
                 <a>
-                  <span className='price' style={{width:'68px'}}>
-                    <p>{content.price}</p>
-                    <p>SAT</p>
-                  </span>
-                  <span className='title' style={{width:'calc(100% - 68px)'}}>
-                    <p>{content.title}</p>
-                  </span>
+                  <summary>
+                    <span className='price' style={{width:'68px'}}>
+                      <p>{content.price}</p>
+                      <p>SAT</p>
+                    </span>
+                    <span className='title' style={{width:'calc(100% - 68px)'}}>
+                      <p>{content.title}</p>
+                    </span>
+                  </summary>
                 </a>
               </Link>
             </li> 
