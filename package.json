@@ -4,7 +4,7 @@
   "description": "A pay-to-decrypt service using lnd",
   "main": "index.js",
   "scripts": {
-    "dev": "node --harmony_async_iteration server.js",
+    "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node --harmony_async_iteration server.js",
     "test": "node_modules/mocha/bin/mocha --exit --harmony_async_iteration test/unit.js"
